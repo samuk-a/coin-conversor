@@ -2,11 +2,11 @@ const Bcb = require('../clients/bcb');
 
 class Convert {
     async coin(req, res) {
-        const {coin} = req.params;
+        const {value} = req.params;
         const {origin, dest} = req.body;
 
-        let converted = await Bcb.convert(coin, origin, dest);
-        return res.json({converted});
+        let converted = await Bcb.convert(value, origin, dest);
+        return res.json({converted, moedas});
     }
 }
 

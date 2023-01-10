@@ -4,6 +4,6 @@ const Convert = require('../controllers/convert');
 
 router = express.Router();
 
-router.get('/:origin/:dest', Convert.coin);
+router.get('/:value', Convert.coin);
 
 module.exports = router
