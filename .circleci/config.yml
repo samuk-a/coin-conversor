@@ -1,0 +1,38 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@4.1
+  heroku: circleci/heroku@1.2
+
+jobs:
+  populate:
+    executor: node/default
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
+      - run:
+          command: npm run populate
+          name: Populate Database
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - .
+  deploy:
+    executor: heroku/default
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - heroku/deploy-via-git:
+          force: true
+
+workflows:
+  build_populate_deploy:
+    jobs:
+      - populate
+      - deploy:
+          requires:
+            - populate
+          filters:
+            branches:
+              only: master
