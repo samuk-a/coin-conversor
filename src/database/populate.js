@@ -8,7 +8,7 @@ const populate = (callback) => {
         data.map(coin => {
             const { simbolo, codigo, nome, nomeFormatado } = coin;
             coins.push({
-                simbol: simbolo,
+                symbol: simbolo,
                 code: codigo,
                 name: nome,
                 formattedName: nomeFormatado

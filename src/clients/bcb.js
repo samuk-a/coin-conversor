@@ -14,13 +14,24 @@ class Bcb {
     async convert(value, originCurrency, destCurrency) {
         const date = new Date();
         const [onlyDate] = date.toISOString().split('T');
-        const resp = await this.client.get(`/converter/${value}/1/${originCurrency}/${destCurrency}/${onlyDate}`);
-        let respData = xml2js(resp.data, {compact: true, nativeType: true});
+        try {
+            const resp = await this.client.get(`/converter/${value}/1/${originCurrency}/${destCurrency}/${onlyDate}`);
+            let respData = xml2js(resp.data, {compact: true, nativeType: true});
         
-        if (respData['valor-convertido']) {
-            return Number(respData['valor-convertido']._text)
+            if (respData['valor-convertido']) {
+                return Number(respData['valor-convertido']._text);
+            }
+            throw new Error("Error on convert!");
+        } catch (err) {
+            if (err.response)
+                switch (err.response.status) {
+                    case 404:
+                        throw new Error("`Origin` AND/OR `Dest` fields are not valid");
+                    default:
+                        throw new Error("Error on convert");
+                }
+            throw err;
         }
-        throw new Error("Error on convert!");
     }
 
     async getCoins() {
