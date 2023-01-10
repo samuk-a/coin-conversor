@@ -8,8 +8,7 @@ class Convert {
     }
 
     async coin(req, res) {
-        const {value} = req.params;
-        let {origin, dest} = req.body;
+        let {value, origin, dest} = req.params;
 
         if (/\D{3}/g.exec(origin))
             origin = findBySymbol(origin)?.code;
