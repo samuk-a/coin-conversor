@@ -3,7 +3,9 @@ const express = require('express');
 const convertRoute = require('./routes/convert');
 
 const PORT = process.env.PORT || 3000;
-const app = express()
+const app = express();
+
+app.disable('x-powered-by');
 
 app.use(express.json())
 

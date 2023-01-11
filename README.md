@@ -1,5 +1,5 @@
 # Coin Conversor
-An REST API to convert different coin types.
+A REST API to convert different coin types.
 Also available in [RapidAPI](https://rapidapi.com/samuka/api/coin-conversor)
 
 The conversor is based on [BACEN site (Brazilian)](https://www.bcb.gov.br/conversao)

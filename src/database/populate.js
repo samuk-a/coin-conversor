@@ -27,6 +27,3 @@ const write = content => {
 }
 
 populate(write);
-// console.log(coins);
-// coins = JSON.parse(coins);
-// write(coins);

@@ -1,6 +1,8 @@
 const axios = require('axios');
 const { xml2js } = require('xml-js');
 
+const { encodeURIs } = require('../utils/string');
+
 class Bcb {
     constructor() {
         this.client = axios.create({
@@ -11,9 +13,12 @@ class Bcb {
         });
     }
 
-    async convert(value, originCurrency, destCurrency) {
+    async convert(val, origin, dest) {
         const date = new Date();
         const [onlyDate] = date.toISOString().split('T');
+        
+        const [value, originCurrency, destCurrency] = encodeURIs(val, origin, dest);
+
         try {
             const resp = await this.client.get(`/converter/${value}/1/${originCurrency}/${destCurrency}/${onlyDate}`);
             let respData = xml2js(resp.data, {compact: true, nativeType: true});
@@ -24,12 +29,10 @@ class Bcb {
             throw new Error("Error on convert!");
         } catch (err) {
             if (err.response)
-                switch (err.response.status) {
-                    case 404:
-                        throw new Error("`Origin` AND/OR `Dest` fields are not valid");
-                    default:
-                        throw new Error("Error on convert");
-                }
+                if (err.response.status === 404)
+                    throw new Error("`Origin` AND/OR `Dest` fields are not valid");
+                else
+                    throw new Error("Error on convert");
             throw err;
         }
     }
